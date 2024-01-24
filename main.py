@@ -1,6 +1,6 @@
 import argparse
 from dotenv import load_dotenv
-from confluence import download
+from src.confluence import download
 
 def main():
     parser = argparse.ArgumentParser(
@@ -14,7 +14,7 @@ def main():
     confluence_download_pages_subparsers = confluence_download.add_subparsers(help='download pages')
     confluence_download_pages = confluence_download_pages_subparsers.add_parser('pages', help='see `pages -h`')
     confluence_download_pages.add_argument('-A', '--all', action='store_true', help='all pages')
-    confluence_download_pages.add_argument('--after', action='store', help='during a certain time period')
+    confluence_download_pages.add_argument('--recently', action='store', help='recently pages count', default=50)
     confluence_download_pages.set_defaults(handler=download.pages)
 
     args = parser.parse_args()
