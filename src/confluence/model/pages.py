@@ -2,6 +2,7 @@ import os
 from datetime import datetime, timezone
 
 from src.utils import store
+from src.utils.logger import logger
 from .base import Base
 
 class Pages(Base):
@@ -25,7 +26,7 @@ class Pages(Base):
     def store(self, data):
         pid = data['id']
         path = self.dir + f'/{self.mode}/{pid}'
-        print(path)
+        logger.info(path)
         if not os.path.exists(path):
             os.makedirs(path, exist_ok=True)
             store.save_json(path + '.json', data)
@@ -37,5 +38,6 @@ class Pages(Base):
             store.save_json(path + '.json', data)
 
             return True
+        logger.info(f'{data['version']['createdAt']} is older than {mtime}')
 
         return False

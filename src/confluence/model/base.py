@@ -2,6 +2,7 @@ import json
 import os
 import requests
 from requests.auth import HTTPBasicAuth
+from src.utils.logger import logger
 
 class Base:
     def __init__(self, directory):
@@ -24,7 +25,7 @@ class Base:
             query = {}
 
         url = f"https://{domain}{path}"
-        print(f"{method} {url}")
+        logger.info(f"{method} {url}")
         auth = HTTPBasicAuth(user, token)
         headers = {
             "Accept": "application/json"
