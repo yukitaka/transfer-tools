@@ -28,15 +28,10 @@ class Pages(Base):
         logger.info(path)
         if not os.path.exists(path):
             os.makedirs(path, exist_ok=True)
-            store.save_json(path + '.json', data)
 
+        if Base.store(path + '.json', data):
             return True
 
-        mtime = datetime.fromtimestamp(os.stat(path + '.json').st_mtime, tz=timezone.utc)
-        if mtime < datetime.fromisoformat(data['version']['createdAt']):
-            store.save_json(path + '.json', data)
-
-            return True
         logger.info(f'{data['version']['createdAt']} is older than {mtime}')
 
         return False

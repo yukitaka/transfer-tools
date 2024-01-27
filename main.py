@@ -23,6 +23,11 @@ def main():
     confluence_download_comments.add_argument('-A', '--all', action='store_true', help='all comments')
     confluence_download_comments.add_argument('--recently', action='store', help='recently comments count', default=50)
     confluence_download_comments.set_defaults(handler=download.comments)
+    # attachments
+    confluence_download_attachments = confluence_download_contents_subparsers.add_parser('attachments', help='see `attachments -h`')
+    confluence_download_attachments.add_argument('-A', '--all', action='store_true', help='all attachments')
+    confluence_download_attachments.add_argument('--recently', action='store', help='recently attachments count', default=50)
+    confluence_download_attachments.set_defaults(handler=download.attachments)
 
     args = parser.parse_args()
     if hasattr(args, 'handler'):
