@@ -54,9 +54,14 @@ class Base:
 
             return True
 
-        mtime = datetime.fromtimestamp(os.stat(filename).st_mtime, tz=timezone.utc)
-        if mtime < datetime.fromisoformat(data['version']['createdAt']):
-            store.save_json(filename, data)
+        if type(data) is dict and 'version' in data:
+            mtime = datetime.fromtimestamp(os.stat(filename).st_mtime, tz=timezone.utc)
+            if mtime < datetime.fromisoformat(data['version']['createdAt']):
+                store.save_json(filename, data)
+
+                return True
+        else:
+            store.save_file(filename, data)
 
             return True
 

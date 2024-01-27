@@ -1,8 +1,6 @@
 import glob
 import os
-from src.utils import store
 from src.utils.logger import logger
-from datetime import datetime, timezone
 from .base import Base
 
 class Comments(Base):
