@@ -1,6 +1,7 @@
 import glob
 import os
 from src.utils import store
+from src.utils.logger import logger
 from datetime import datetime, timezone
 from .base import Base
 
@@ -28,7 +29,7 @@ class Comments(Base):
 
         search = False
         for filename in glob.glob(path + f'*-{data['id']}.json'):
-            print(filename)
+            logger.info(filename)
             if not os.path.exists(filename):
                 store.save_json(filename, data)
 
@@ -42,6 +43,6 @@ class Comments(Base):
             search = True
 
         if not search:
-            print('Error ' + path, data)
+            logger.error(path, data)
 
         return False
