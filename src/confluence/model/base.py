@@ -1,8 +1,10 @@
 import json
 import os
 import requests
-from requests.auth import HTTPBasicAuth
+from src.utils import store
 from src.utils.logger import logger
+from datetime import datetime, timezone
+from requests.auth import HTTPBasicAuth
 
 class Base:
     def __init__(self, directory):
@@ -43,3 +45,24 @@ class Base:
             return False
 
         return json.loads(res.text)
+
+    @staticmethod
+    def store(filename, data):
+        logger.info(filename)
+        if not os.path.exists(filename):
+            store.save_json(filename, data)
+
+            return True
+
+        if type(data) is dict and 'version' in data:
+            mtime = datetime.fromtimestamp(os.stat(filename).st_mtime, tz=timezone.utc)
+            if mtime < datetime.fromisoformat(data['version']['createdAt']):
+                store.save_json(filename, data)
+
+                return True
+        else:
+            store.save_file(filename, data)
+
+            return True
+
+        return False
