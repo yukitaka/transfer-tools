@@ -1,38 +1,30 @@
 import glob
 import time
-import re
 import os
 from .base import Base
 from src.utils import store
 from src.utils.logger import logger
+from src.confluence.model.pages import Pages as Confluence
 
 class Pages(Base):
     def __init__(self, path):
         self.path = 'data/growi' + path
 
-    @staticmethod
-    def get_confluence_id(file_name):
-        m = re.match(r'[^\d]+(\d+).title$', file_name)
-        if m is None:
-            logger.fatal(f'Could not find {file_name}')
+    def download_all(self):
+        for page in Confluence.filelist():
+            if self.download(page):
+                time.sleep(1)
 
-        return m.group(1)
-    def recently_download(self, limit=10):
-        files = glob.glob('data/confluence/pages/*.title')
-        files.sort(key=os.path.getmtime)
-        for f in files[:limit]:
-            cid = self.get_confluence_id(f)
-            if glob.glob(self.path + f'/*/{cid}.id'):
-                continue
-            with open(f, 'r') as f:
-                path = f.read()
-                data = Base.get('/page', {'path': path})
-                if 'page' not in data:
-                    print(cid, path)
-                    continue
-                pid = data['page']['_id']
-                self.store(cid, pid, data)
-            time.sleep(1)
+    def download(self, page):
+        if glob.glob(self.path + f'/*/{page.id}.id'):
+            return False
+        data = Base.get('/page', {'path': page.path()})
+        if 'page' not in data:
+            return False
+        pid = data['page']['_id']
+        self.store(page.id, pid, data)
+
+        return True
 
     def store(self, cid, pid, data):
         meta = {'updatedAt': data['page']['updatedAt'], 'path': data['page']['path']}
