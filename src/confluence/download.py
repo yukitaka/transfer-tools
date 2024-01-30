@@ -1,4 +1,3 @@
-import os
 from .model.pages import Pages
 from .model.comments import Comments
 from .model.attachments import Attachments

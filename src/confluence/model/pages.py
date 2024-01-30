@@ -3,6 +3,7 @@ import os
 from src.utils.logger import logger
 from .base import Base
 from .user import User
+from .page import Page
 from ..converter.to_md import Converter
 from ...utils import store
 
@@ -54,3 +55,8 @@ class Pages(Base):
 
     def store(self, path, data):
         return Base.store(path, data)
+
+    @staticmethod
+    def filelist():
+        for file in glob.iglob('data/confluence/pages/*.json'):
+            yield Page.from_file(file)
