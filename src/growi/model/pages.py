@@ -10,15 +10,22 @@ class Pages(Base):
     def __init__(self, path):
         self.path = 'data/growi' + path
 
+    def upload_all(self):
+        pass
+
     def download_all(self):
         for page in Confluence.filelist():
+            if not page:
+                continue
+            if not page.is_uploaded():
+                continue
             if self.download(page):
                 time.sleep(1)
 
     def download(self, page):
         if glob.glob(self.path + f'/*/{page.id}.id'):
             return False
-        data = Base.get('/page', {'path': page.path()})
+        data = Base.get('/page', {'path': page.upload_path()})
         if 'page' not in data:
             return False
         pid = data['page']['_id']

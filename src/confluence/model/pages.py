@@ -58,5 +58,5 @@ class Pages(Base):
 
     @staticmethod
     def filelist():
-        for file in glob.iglob('data/confluence/pages/*.title'):
+        for file in glob.iglob('data/confluence/pages/*.json'):
             yield Page.from_file(file)
