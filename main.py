@@ -3,6 +3,8 @@ from dotenv import load_dotenv
 from src.confluence import download as cd
 from src.confluence import convert as cc
 from src.growi import download as gd
+from src.interactor import upload as uploader
+
 
 def main():
     parser = argparse.ArgumentParser(
@@ -45,6 +47,10 @@ def main():
     growi_download_contents_subparsers = growi_download.add_subparsers(help='download contents')
     # pages
     add_download(growi_download_contents_subparsers, gd.pages)
+    # uploader
+    growi_upload = growi_subparsers.add_parser('upload', help='see `upload -h`')
+    growi_upload.set_defaults(handler=uploader.upload)
+
 
     args = parser.parse_args()
     if hasattr(args, 'handler'):
