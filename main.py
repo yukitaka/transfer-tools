@@ -4,6 +4,7 @@ from src.confluence import download as cd
 from src.confluence import convert as cc
 from src.growi import download as gd
 from src.interactor import upload as uploader
+from src.interactor.download import Confluence
 
 
 def main():
@@ -18,7 +19,7 @@ def main():
     confluence_download = confluence_subparsers.add_parser('download', help='see `download -h`')
     confluence_download_contents_subparsers = confluence_download.add_subparsers(help='download contents')
     # pages
-    add_download(confluence_download_contents_subparsers, cd.pages)
+    add_download(confluence_download_contents_subparsers, Confluence.pages)
     # comments
     confluence_download_comments = confluence_download_contents_subparsers.add_parser('comments', help='see `comments -h`')
     confluence_download_comments.add_argument('-A', '--all', action='store_true', help='all comments')
