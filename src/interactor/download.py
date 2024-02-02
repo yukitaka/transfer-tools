@@ -3,6 +3,7 @@ from ..utils.store import save_file
 from ..confluence.converter.title import joined_path
 from ..confluence.model.pages import Pages as ConfluencePages
 from ..confluence.model.comments import Comments as ConfluenceComments
+from ..confluence.model.attachments import Attachments as ConfluenceAttachments
 
 class Confluence:
     @staticmethod
@@ -17,3 +18,8 @@ class Confluence:
     def comments(args):
         c = ConfluenceComments('data/confluence')
         c.recently_download(int(args.recently))
+
+    @staticmethod
+    def attachments(args):
+        a = ConfluenceAttachments('data/confluence')
+        a.recently_download(int(args.recently))
