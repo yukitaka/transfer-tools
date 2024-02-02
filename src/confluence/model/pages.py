@@ -57,6 +57,23 @@ class Pages(Base):
         return Base.store(path, data)
 
     @staticmethod
+    def recently(limit=50):
+        lst = []
+        for file in Pages.filelist():
+            if len(lst) == 0:
+                lst.append(file)
+            else:
+                created_at = file.json()['version']['createdAt']
+                for k, v in enumerate(lst):
+                    if created_at > v.json()['version']['createdAt']:
+                        lst.insert(k, file)
+                        break
+                if len(lst) > limit:
+                    lst = lst[:limit]
+
+        return lst
+
+    @staticmethod
     def filelist():
         for file in glob.iglob('data/confluence/pages/[0-9]*.json'):
             yield Page.from_file(file)
