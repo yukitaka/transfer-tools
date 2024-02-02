@@ -24,7 +24,7 @@ def main():
     confluence_download_comments = confluence_download_contents_subparsers.add_parser('comments', help='see `comments -h`')
     confluence_download_comments.add_argument('-A', '--all', action='store_true', help='all comments')
     confluence_download_comments.add_argument('--recently', action='store', help='recently comments count', default=50)
-    confluence_download_comments.set_defaults(handler=cd.comments)
+    confluence_download_comments.set_defaults(handler=Confluence.comments)
     # attachments
     confluence_download_attachments = confluence_download_contents_subparsers.add_parser('attachments', help='see `attachments -h`')
     confluence_download_attachments.add_argument('-A', '--all', action='store_true', help='all attachments')
