@@ -20,9 +20,9 @@ class Base:
 
     @staticmethod
     def request(method, path, query=None):
-        domain = os.environ['CONFLUENCE_DOMAIN']
-        user = os.environ['ATLASSIAN_USER']
-        token = os.environ['ATLASSIAN_TOKEN']
+        domain = os.environ.get('CONFLUENCE_DOMAIN')
+        user = os.environ.get('ATLASSIAN_USER')
+        token = os.environ.get('ATLASSIAN_TOKEN')
         if query is None:
             query = {}
 
