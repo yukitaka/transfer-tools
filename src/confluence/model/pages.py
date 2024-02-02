@@ -47,7 +47,7 @@ class Pages(Base):
         if not os.path.exists(path):
             os.makedirs(path, exist_ok=True)
 
-        if self.store(path + '.json', data):
+        if self.store(f'{path}/page.json', data):
             return True
         logger.info(f'{data['version']['createdAt']} is older')
 
