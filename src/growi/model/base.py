@@ -8,12 +8,12 @@ class Base:
 
     @staticmethod
     def request(method, path, params=None, data=None, json=None, v=3):
-        host = os.environ['GROWI_DOMAIN']
+        host = os.environ.get('GROWI_DOMAIN')
         url = f"{host}/_api"
         if v == 3:
             url += '/v3'
         url += path
-        token = os.environ['GROWI_TOKEN']
+        token = os.environ.get('GROWI_TOKEN')
         req = {"method": method, "url": url, "params": params}
         if data:
             data["access_token"] = token
