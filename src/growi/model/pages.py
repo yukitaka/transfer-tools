@@ -2,9 +2,11 @@ import glob
 import time
 import os
 from .base import Base
+from .page import Page
 from src.utils import store
 from src.utils.logger import logger
 from src.confluence.model.pages import Pages as Confluence
+
 
 class Pages(Base):
     def __init__(self, path):
@@ -54,3 +56,7 @@ class Pages(Base):
             store.save_file(base + '/' + cid + '.id', '')
             store.save_file(md, contents)
             store.save_json(json, meta)
+    @staticmethod
+    def filelist():
+        for directory in glob.iglob('data/growi/pages/*'):
+            yield Page(directory.split('/')[-1])
