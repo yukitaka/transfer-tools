@@ -4,6 +4,7 @@ from src.confluence import convert as cc
 from src.growi import download as gd
 from src.interactor import upload as uploader
 from src.interactor.download import Confluence
+from src.interactor.diff import Diff
 
 
 def main():
@@ -11,6 +12,8 @@ def main():
         description='Transfer confluence to growi and jira to redmine'
     )
     subparsers = parser.add_subparsers(help='commands')
+    differ = subparsers.add_parser('diff', help='see `diff -h`')
+    differ.set_defaults(handler=Diff.pages)
 
     confluence = subparsers.add_parser('confluence', help='see `confluence -h`')
     confluence_subparsers = confluence.add_subparsers(help='confluence commands')
