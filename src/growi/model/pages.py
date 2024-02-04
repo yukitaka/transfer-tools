@@ -54,3 +54,7 @@ class Pages(Base):
             store.save_file(base + '/' + cid + '.id', '')
             store.save_file(md, contents)
             store.save_json(json, meta)
+    @staticmethod
+    def filelist():
+        for directory in glob.iglob('data/growi/pages/*'):
+            yield directory.split('/')[-1]

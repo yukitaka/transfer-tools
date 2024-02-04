@@ -13,7 +13,9 @@ def main():
     )
     subparsers = parser.add_subparsers(help='commands')
     differ = subparsers.add_parser('diff', help='see `diff -h`')
-    differ.set_defaults(handler=Diff.pages)
+    differ_subparsers = differ.add_subparsers(help='diff commands')
+    differ_subparsers_pages = differ_subparsers.add_parser('pages', help='see `pages -h`')
+    differ_subparsers_pages.set_defaults(handler=Diff.pages)
 
     confluence = subparsers.add_parser('confluence', help='see `confluence -h`')
     confluence_subparsers = confluence.add_subparsers(help='confluence commands')
