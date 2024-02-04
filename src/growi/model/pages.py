@@ -2,9 +2,11 @@ import glob
 import time
 import os
 from .base import Base
+from .page import Page
 from src.utils import store
 from src.utils.logger import logger
 from src.confluence.model.pages import Pages as Confluence
+
 
 class Pages(Base):
     def __init__(self, path):
@@ -57,4 +59,4 @@ class Pages(Base):
     @staticmethod
     def filelist():
         for directory in glob.iglob('data/growi/pages/*'):
-            yield directory.split('/')[-1]
+            yield Page(directory.split('/')[-1])
