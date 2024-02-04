@@ -11,7 +11,11 @@ class Diff:
             cid = Diff.confluence_id(page)
             cpage = ConfluencePage(cid)
             confluence = cpage.md().split('\n')
-            sys.stdout.writelines(context_diff(growi, confluence, fromfile=page.id, tofile=cpage.id))
+            diff = list(context_diff(growi, confluence, fromfile=page.id, tofile=cpage.id))
+            if len(diff) > 0:
+                for line in diff:
+                    print(line, end='')
+                print("\n")
 
     @staticmethod
     def confluence_id(page):
