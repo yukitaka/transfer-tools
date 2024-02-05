@@ -3,8 +3,12 @@ import requests
 
 class Base:
     @staticmethod
-    def get(path, query=None, v=3):
+    def get_request(path, query=None, v=3):
         return Base.request('get', path, params=query, v=v)
+
+    @staticmethod
+    def post_request(path, data=None, v=3):
+        return Base.request('post', path, data=data, v=v)
 
     @staticmethod
     def request(method, path, params=None, data=None, json=None, v=3):
