@@ -1,6 +1,10 @@
 import os.path
 import re
 from src.utils.store import load_json
+from .pages import Pages
+from .user import User
+from ..converter.to_md import Converter
+from ...utils import store
 
 class Page:
     def __init__(self, cid):
@@ -17,17 +21,24 @@ class Page:
         if self.markdown is not None:
             return self.markdown
 
-        with open(self.file_path() + '/page.md') as f:
-            self.markdown = f.read()
+        path = self.file_path() + '/page.md'
+        if os.path.exists(path):
+            with open(self.file_path() + '/page.md') as f:
+                self.markdown = f.read()
 
-            return self.markdown
+                return self.markdown
+        else:
+            page = self.json()
+            author = User.get_user_by_id(page['version']['authorId'])
+            date = page['createdAt']
+            data = store.load_jsons(page['body']['atlas_doc_format']['value'])
+            conv = f"Author: {author.name}\n"
+            conv += f"Created: {date}\n\n"
+            conv += Converter(data, self.file_path()).md
 
-    def is_uploaded(self):
-        return os.path.exists(self.file_path() + '/title.txt')
+            Pages.store(self.file_path() + '/page.md', conv)
 
-    def upload_path(self):
-        with open(self.file_path() + '/title.txt', 'r') as f:
-            return f.read()
+            return conv
 
     @staticmethod
     def from_file(file):

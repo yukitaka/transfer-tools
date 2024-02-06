@@ -6,8 +6,10 @@ def joined_path(page):
     current_page = page
     while True:
         json = current_page.json()
+        if not json:
+            break
         parent_id = json['parentId']
-        if parent_id is None:
+        if not parent_id:
             break
         title = json['title']
         title = title.replace('/', '-').replace(':', '：').replace('+', '＋').replace('?', '？')

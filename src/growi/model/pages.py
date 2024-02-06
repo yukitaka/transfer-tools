@@ -12,6 +12,21 @@ class Pages(Base):
     def __init__(self, path):
         self.path = 'data/growi' + path
 
+    @staticmethod
+    def get(path):
+        return Base.get_request('/page', {'path': path})
+
+    @staticmethod
+    def upload(path, data):
+        current = Pages.get(path)
+        if current.status_code == 404:
+            return Base.post_request('/pages', data=data)
+        else:
+            print('Before ------------------')
+            print(current)
+            print('After ------------------')
+            print(data)
+
     def upload_all(self):
         pass
 
