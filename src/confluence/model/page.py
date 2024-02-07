@@ -43,7 +43,7 @@ class Page:
 
     def attachments(self):
         for file in glob.iglob(f'data/confluence/pages/{self.id}/attachments/*.json'):
-            att = file.split('/')[-1]
+            att = file.split('/')[-1].split('.')[0]
             yield Attachment(self.id, att)
 
     @staticmethod

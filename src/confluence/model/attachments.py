@@ -1,5 +1,7 @@
 import os
+import glob
 from .base import Base
+from .attachment import Attachment
 from .. import util_file
 
 class Attachments(Base):
@@ -26,3 +28,10 @@ class Attachments(Base):
 
         filename = path + data['id'] + '.json'
         util_file.save(filename, data)
+
+    @staticmethod
+    def filelist():
+        for file in glob.iglob('data/confluence/pages/[0-9]*/attachments/*.json'):
+            page_id = file.split('/')[-3]
+            att_id = file.split('/')[-1].split('.')[0]
+            yield Attachment(page_id, att_id)

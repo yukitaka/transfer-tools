@@ -6,14 +6,13 @@ class Attachment:
         self.id = att
         self.page_id = cid
 
-    def file_path(self):
+    def base_path(self):
         return f'data/confluence/pages/{self.page_id}/attachments/{self.id}'
 
     def json(self):
-        print(self.file_path())
-        return load_json(self.file_path())
+        return load_json(self.base_path() + '.json')
     def file(self):
         name = self.json()['title']
-        file_path = self.file_path().replace(self.id, name)
+        file_path = self.base_path().replace(self.id, name)
         if os.path.exists(file_path):
             return (name, open(file_path, 'rb'))
