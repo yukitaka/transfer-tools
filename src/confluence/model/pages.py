@@ -4,8 +4,8 @@ from src.utils.logger import logger
 from .base import Base
 from .user import User
 from .page import Page
+from .. import util_file
 from ..converter.to_md import Converter
-from ...utils import store
 
 class Pages(Base):
     def __init__(self, directory, mode):
@@ -54,7 +54,7 @@ class Pages(Base):
         return False
 
     def store(self, path, data):
-        return Base.store(path, data)
+        return util_file.save(path, data)
 
     @staticmethod
     def recently(limit=50):

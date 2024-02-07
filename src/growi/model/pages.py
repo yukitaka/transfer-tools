@@ -3,7 +3,7 @@ import time
 import os
 from .base import Base
 from .page import Page
-from src.utils import store
+from src.utils import file
 from src.utils.logger import logger
 from src.confluence.model.pages import Pages as Confluence
 
@@ -19,8 +19,8 @@ class Pages(Base):
     @staticmethod
     def upload(path, data):
         current = Pages.get(path)
-        if current.status_code == 404:
-            return Base.post_request('/pages', data=data)
+        if type(current) == int and current == 404:
+            return Base.post_request('/pages', json={'path': path, 'body': data })
         else:
             print('Before ------------------')
             print(current)
@@ -42,7 +42,7 @@ class Pages(Base):
     def download(self, page):
         if glob.glob(self.path + f'/*/{page.id}.id'):
             return False
-        data = Base.get('/page', {'path': page.upload_path()})
+        data = Base.get_request('/page', {'path': page.upload_path()})
         if 'page' not in data:
             return False
         pid = data['page']['_id']
@@ -62,15 +62,15 @@ class Pages(Base):
         if not os.path.exists(md):
             should_store = True
         else:
-            local_meta = store.load_json(json)
+            local_meta = file.load_json(json)
             if local_meta['updatedAt'] < meta['updatedAt']:
                 should_store = True
 
         if should_store:
             logger.info(f'Storing page {pid}')
-            store.save_file(base + '/' + cid + '.id', '')
-            store.save_file(md, contents)
-            store.save_json(json, meta)
+            file.save(base + '/' + cid + '.id', '')
+            file.save(md, contents)
+            file.save_json(json, meta)
     @staticmethod
     def filelist():
         for directory in glob.iglob('data/growi/pages/*'):

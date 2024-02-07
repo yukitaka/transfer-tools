@@ -1,12 +1,13 @@
 import os
 import json
+from src.utils.logger import logger
 
 def save_json(path, data):
     text = json.dumps(data, sort_keys=True, indent=4, separators=(", ", ": "))
-    save_file(path, text)
+    save(path, text)
 
 
-def save_file(path, text):
+def save(path, text):
     with open(path, mode="w") as f:
         f.write(text)
 

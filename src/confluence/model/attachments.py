@@ -1,8 +1,8 @@
 import os
-from datetime import datetime, timezone
-from src.utils import store
-from src.utils.logger import logger
+import glob
 from .base import Base
+from .attachment import Attachment
+from .. import util_file
 
 class Attachments(Base):
     def __init__(self, directory):
@@ -27,4 +27,11 @@ class Attachments(Base):
             os.makedirs(path, exist_ok=True)
 
         filename = path + data['id'] + '.json'
-        Base.store(filename, data)
+        util_file.save(filename, data)
+
+    @staticmethod
+    def filelist():
+        for file in glob.iglob('data/confluence/pages/[0-9]*/attachments/*.json'):
+            page_id = file.split('/')[-3]
+            att_id = file.split('/')[-1].split('.')[0]
+            yield Attachment(page_id, att_id)
