@@ -54,8 +54,11 @@ def main():
     add_download(growi_download_contents_subparsers, gd.pages)
     # uploader
     growi_upload = growi_subparsers.add_parser('upload', help='see `upload -h`')
-    growi_upload.set_defaults(handler=Growi.pages)
-
+    growi_upload_subparsers = growi_upload.add_subparsers(help='upload contents')
+    growi_upload_pages = growi_upload_subparsers.add_parser('pages', help='see `pages -h`')
+    growi_upload_pages.set_defaults(handler=Growi.pages)
+    growi_upload_attachments = growi_upload_subparsers.add_parser('attachments', help='see `pages -h`')
+    growi_upload_attachments.set_defaults(handler=Growi.attachments)
 
     args = parser.parse_args()
     if hasattr(args, 'handler'):

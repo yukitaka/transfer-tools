@@ -1,10 +1,11 @@
-import json
+import glob
 import os.path
 import re
-from src.utils.file import load_json
 from .user import User
+from .attachment import Attachment
 from ..converter.to_md import Converter
 from .. import util_file
+from ...utils.file import load_json
 
 class Page:
     def __init__(self, cid):
@@ -39,6 +40,11 @@ class Page:
             util_file.save(self.file_path() + '/page.md', conv)
 
             return conv
+
+    def attachments(self):
+        for file in glob.iglob(f'data/confluence/pages/{self.id}/attachments/*.json'):
+            att = file.split('/')[-1]
+            yield Attachment(self.id, att)
 
     @staticmethod
     def from_file(file):

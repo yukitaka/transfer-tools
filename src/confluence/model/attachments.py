@@ -1,8 +1,6 @@
 import os
-from datetime import datetime, timezone
-from src.utils import file
-from src.utils.logger import logger
 from .base import Base
+from .. import util_file
 
 class Attachments(Base):
     def __init__(self, directory):
@@ -27,4 +25,4 @@ class Attachments(Base):
             os.makedirs(path, exist_ok=True)
 
         filename = path + data['id'] + '.json'
-        Base.store(filename, data)
+        util_file.save(filename, data)

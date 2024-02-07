@@ -4,16 +4,27 @@ from ..confluence.converter.title import joined_path
 from ..confluence.model.pages import Pages as Confluence
 from ..growi.model.pages import Pages as GrowiPages
 
-def is_uploaded(page):
-    return os.path.exists(page.file_path() + '/growi.id')
 
 class Growi:
     @staticmethod
-    def pages():
+    def attachments(args):
+        for page in Confluence.filelist():
+            attachments = page.attachments()
+            if not attachments:
+                continue
+            for attachment in attachments:
+                print(attachment.file())
+
+    @staticmethod
+    def is_page_uploaded(page):
+        return os.path.exists(page.file_path() + '/growi.id')
+
+    @staticmethod
+    def pages(args):
         for page in Confluence.filelist():
             path = joined_path(page)
 
-            if not is_uploaded(page):
+            if not Growi.is_page_uploaded(page):
                 upload_path = os.environ.get('GROWI_PATH') + path
 
                 res = GrowiPages.upload(upload_path, page.md())
