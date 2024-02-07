@@ -1,4 +1,4 @@
-from src.utils import store
+from src.utils import file
 
 class User:
     def __init__(self, name):
@@ -6,7 +6,7 @@ class User:
 
     @staticmethod
     def get_user_by_id(user_id):
-        user = store.load_json(f'data/confluence/users/{user_id}.json')
+        user = file.load_json(f'data/confluence/users/{user_id}.json')
 
         return User(str.strip(user['displayName'].replace('(Unlicensed)', '')))
 

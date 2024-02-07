@@ -1,6 +1,6 @@
 import glob
 from ..model.user import User
-from ...utils import store
+from ...utils import file
 
 class Converter:
     def __init__(self, doc, path):

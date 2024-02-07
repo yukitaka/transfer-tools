@@ -7,8 +7,8 @@ class Base:
         return Base.request('get', path, params=query, v=v)
 
     @staticmethod
-    def post_request(path, data=None, v=3):
-        return Base.request('post', path, data=data, v=v)
+    def post_request(path, json=None, data=None, v=3):
+        return Base.request('post', path, json=json, data=data, v=v)
 
     @staticmethod
     def request(method, path, params=None, data=None, json=None, v=3):
@@ -32,5 +32,8 @@ class Base:
             req["params"]["access_token"] = token
 
         req['headers']['Accept'] = 'application/json'
+        res = requests.request(**req)
+        if res.status_code != requests.codes.ok and res.status_code != requests.codes.created:
+            return res.status_code
 
-        return requests.request(**req).json()
+        return res.json()

@@ -15,12 +15,15 @@ def upload(args):
             upload_path = os.environ.get('GROWI_PATH') + path
 
             res = Growi.upload(upload_path, page.md())
-            growi_id = res['data']['page']['_id']
+            if not res:
+                continue
+            print(res)
+            growi_id = res['page']['_id']
             with open(page.file_path() + '/growi.id', 'w') as f:
                 f.write(growi_id)
                 print(f'Uploaded {path} to Growi')
             os.makedirs('data/growi/pages/' + growi_id, exist_ok=True)
-            meta = {'path': res['data']['page']['path'], 'updatedAt': res['data']['page']['updatedAt']}
+            meta = {'path': res['page']['path'], 'updatedAt': res['page']['updatedAt']}
             with open('data/growi/pages/' + growi_id + '/meta.json', 'w') as f:
                 f.write(json.dumps(meta))
             with open('data/growi/pages/' + growi_id + '/confluence.id', 'w') as f:

@@ -1,10 +1,10 @@
+import json
 import os.path
 import re
-from src.utils.store import load_json
-from .pages import Pages
+from src.utils.file import load_json
 from .user import User
 from ..converter.to_md import Converter
-from ...utils import store
+from .. import util_file
 
 class Page:
     def __init__(self, cid):
@@ -31,12 +31,12 @@ class Page:
             page = self.json()
             author = User.get_user_by_id(page['version']['authorId'])
             date = page['createdAt']
-            data = store.load_jsons(page['body']['atlas_doc_format']['value'])
+            data = load_json(page['body']['atlas_doc_format']['value'])
             conv = f"Author: {author.name}\n"
             conv += f"Created: {date}\n\n"
             conv += Converter(data, self.file_path()).md
 
-            Pages.store(self.file_path() + '/page.md', conv)
+            util_file.save(self.file_path() + '/page.md', conv)
 
             return conv
 
