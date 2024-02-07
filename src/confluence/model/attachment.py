@@ -16,4 +16,4 @@ class Attachment:
         name = self.json()['title']
         file_path = self.file_path().replace(self.id, name)
         if os.path.exists(file_path):
-            return {'file': (name, open(file_path, 'rb'))}
+            return (name, open(file_path, 'rb'))

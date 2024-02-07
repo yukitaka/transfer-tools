@@ -1,4 +1,5 @@
 import os.path
+from ...utils.file import save_json
 
 
 class Page:
@@ -17,3 +18,8 @@ class Page:
             self.markdown = f.read()
 
             return self.markdown
+
+    def add_attachment(self, att_id, attachment):
+        path = f'{self.local_path()}/attachments'
+        os.makedirs(path, exist_ok=True)
+        save_json(f'{path}/{att_id}.json', attachment)

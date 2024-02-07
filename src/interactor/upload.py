@@ -3,9 +3,16 @@ import json
 from ..confluence.converter.title import joined_path
 from ..confluence.model.pages import Pages as Confluence
 from ..growi.model.pages import Pages as GrowiPages
+from ..growi.model.page import Page as GrowiPage
+from ..growi.model.attachments import Attachments as GrowiAttachments
 
 
 class Growi:
+    @staticmethod
+    def page(confluence_page):
+        with open(f'data/confluence/pages/{confluence_page.id}/growi.id', 'r') as f:
+            return GrowiPage(f.read())
+
     @staticmethod
     def attachments(args):
         for page in Confluence.filelist():
@@ -13,7 +20,9 @@ class Growi:
             if not attachments:
                 continue
             for attachment in attachments:
-                print(attachment.file())
+                growi = Growi.page(page)
+                res = GrowiAttachments.upload(growi.id, attachment.file())
+                growi.add_attachment(res['attachment']['_id'], res['attachment'])
 
     @staticmethod
     def is_page_uploaded(page):
