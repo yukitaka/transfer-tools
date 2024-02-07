@@ -2,7 +2,7 @@ import argparse
 from dotenv import load_dotenv
 from src.confluence import convert as cc
 from src.growi import download as gd
-from src.interactor import upload as uploader
+from src.interactor.upload import Growi
 from src.interactor.download import Confluence
 from src.interactor.diff import Diff
 
@@ -54,7 +54,7 @@ def main():
     add_download(growi_download_contents_subparsers, gd.pages)
     # uploader
     growi_upload = growi_subparsers.add_parser('upload', help='see `upload -h`')
-    growi_upload.set_defaults(handler=uploader.upload)
+    growi_upload.set_defaults(handler=Growi.pages)
 
 
     args = parser.parse_args()
