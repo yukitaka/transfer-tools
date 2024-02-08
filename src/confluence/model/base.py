@@ -44,4 +44,7 @@ class Base:
         if res.status_code != requests.codes.ok:
             return False
 
-        return json.loads(res.text)
+        if res.headers['Content-Type'] == 'application/json':
+            return res.json()
+        else:
+            return res.content
