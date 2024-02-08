@@ -23,7 +23,6 @@ class Confluence:
     def attachments(args):
         a = ConfluenceAttachments('data/confluence')
         for att in a.filelist():
-
-            print(att.json())
+            att.download()
         #a.recently_download(int(args.recently))
 
