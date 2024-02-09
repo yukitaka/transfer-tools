@@ -14,7 +14,7 @@ class Attachments(Base):
 
         return Base.get('/wiki/api/v2/attachments', params)
 
-    def recently_download(self, limit=50):
+    def downloads(self, limit=50):
         data = Attachments.list(limit)
         for p in data['results']:
             if not self.store(p):

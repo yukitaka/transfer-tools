@@ -22,8 +22,8 @@ class Confluence:
     @staticmethod
     def attachments(args):
         a = ConfluenceAttachments('data/confluence')
-        for att in a.filelist():
-
-            print(att.json())
-        #a.recently_download(int(args.recently))
-
+        if args.recently > 0:
+            a.downloads(int(args.recently))
+        else:
+            for att in a.filelist():
+                att.download()

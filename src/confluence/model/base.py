@@ -41,7 +41,10 @@ class Base:
             auth=auth
         )
 
-        if res.status_code != requests.codes.ok:
-            return False
 
-        return json.loads(res.text)
+        if res.headers['Content-Type'] == 'application/json':
+            if res.status_code != requests.codes.ok:
+                return False
+            return res.json()
+        else:
+            return res
