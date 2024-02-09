@@ -22,7 +22,7 @@ class Confluence:
     @staticmethod
     def attachments(args):
         a = ConfluenceAttachments('data/confluence')
-        if 'recently' in args:
+        if args.recently > 0:
             a.downloads(int(args.recently))
         else:
             for att in a.filelist():
