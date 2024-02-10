@@ -2,6 +2,7 @@ import os
 import glob
 from .base import Base
 from .attachment import Attachment
+from .page import Page
 from .. import util_file
 
 class Attachments(Base):
@@ -22,6 +23,14 @@ class Attachments(Base):
 
     def store(self, data):
         pid = data['pageId']
+        version = data['version']['number']
+        if version > 1:
+            page = Page(pid)
+            for att in page.attachments():
+                json = att.json()
+                if json['title'] == data['title'] and json['version']['number'] >= version:
+                    os.remove(att.base_path() + '.json')
+
         path = self.dir + f'/pages/{pid}/attachments/'
         if not os.path.exists(path):
             os.makedirs(path, exist_ok=True)

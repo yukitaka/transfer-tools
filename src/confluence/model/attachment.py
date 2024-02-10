@@ -31,16 +31,15 @@ class Attachment:
         if os.path.exists(file_path) and os.path.getsize(file_path) == file_size:
             logger.info(f'{file_name} already exists')
             return
-        print(self.page_id, self.id, file_name, link)
-        print(os.path.getsize(file_path), file_size)
-        exit(0)
         att = Base.get(f'/wiki{link}')
-        #if not att.content:
         if att.status_code == 404:
             if os.path.exists(file_path):
                 os.remove(file_path)
             os.remove(self.base_path() + '.json')
         else:
             with open(file_path, 'wb') as f:
+                for chunk in att.iter_content(chunk_size=512):
+                    f.write(chunk)
+                f.flush()
+                att.close()
                 logger.info(f'{self.page_id}.{self.id} {file_name} downloaded')
-                f.write(att.content)

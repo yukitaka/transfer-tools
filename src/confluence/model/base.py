@@ -38,13 +38,16 @@ class Base:
             url,
             headers=headers,
             params=query,
-            auth=auth
+            auth=auth,
+            stream=True
         )
-
-
         if res.headers['Content-Type'] == 'application/json':
             if res.status_code != requests.codes.ok:
+                res.close()
                 return False
             return res.json()
         else:
             return res
+
+
+
