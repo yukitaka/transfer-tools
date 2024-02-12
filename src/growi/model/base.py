@@ -29,6 +29,8 @@ class Base:
             req["json"] = json
         else:
             req["headers"] = {"Content-Type": "application/json", "Accept": "application/json"}
+            if req["params"] is None:
+                req["params"] = {}
             req["params"]["access_token"] = token
 
         print(req)
@@ -37,4 +39,7 @@ class Base:
             print(res.text)
             return res.status_code
 
-        return res.json()
+        if res.headers['Content-Type'] == 'application/json':
+            return res.json()
+        else:
+            return res.content
