@@ -33,13 +33,11 @@ class Base:
                 req["params"] = {}
             req["params"]["access_token"] = token
 
-        print(req)
         res = requests.request(**req)
         if res.status_code != requests.codes.ok and res.status_code != requests.codes.created:
-            print(res.text)
             return res.status_code
 
-        if res.headers['Content-Type'] == 'application/json':
+        if res.headers['Content-Type'].startswith('application/json'):
             return res.json()
         else:
             return res.content
