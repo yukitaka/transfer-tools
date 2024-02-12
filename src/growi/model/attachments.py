@@ -2,6 +2,10 @@ from .base import Base
 
 class Attachments(Base):
     @staticmethod
+    def list(page_id):
+        return Base.get_request(f'/attachment/list', query={'pageId': page_id})
+
+    @staticmethod
     def get(attachment_id):
         return Base.get_request(f'/attachment/{attachment_id}')
 
