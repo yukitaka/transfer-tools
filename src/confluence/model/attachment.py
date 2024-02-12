@@ -17,11 +17,14 @@ class Attachment:
             self.json_blob = load_json(self.base_path() + '.json')
         return self.json_blob
 
+    def file_name(self):
+        return self.json()['title']
+
     def file(self):
-        name = self.json()['title']
+        name = self.file_name()
         file_path = self.base_path().replace(self.id, name)
         if os.path.exists(file_path):
-            return name, open(file_path, 'rb')
+            return name, open(file_path, 'rb'), self.json()['mediaType']
 
     def download(self):
         link = self.json()['downloadLink']
