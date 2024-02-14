@@ -3,6 +3,7 @@ from dotenv import load_dotenv
 from src.confluence import convert as cc
 from src.growi import download as gd
 from src.interactor.upload import Growi
+from src.interactor.stat import GrowiStat
 from src.interactor.download import Confluence
 from src.interactor.diff import Diff
 
@@ -59,6 +60,10 @@ def main():
     growi_upload_pages.set_defaults(handler=Growi.pages)
     growi_upload_attachments = growi_upload_subparsers.add_parser('attachments', help='see `pages -h`')
     growi_upload_attachments.set_defaults(handler=Growi.attachments)
+
+    # stat
+    growi_stat = growi_subparsers.add_parser('stat', help='see `stat -h`')
+    growi_stat.set_defaults(handler=GrowiStat.size)
 
     args = parser.parse_args()
     if hasattr(args, 'handler'):
