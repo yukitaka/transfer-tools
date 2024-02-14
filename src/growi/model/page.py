@@ -1,6 +1,6 @@
 import os.path
 from .attachment import Attachment
-from ...utils.file import save_json
+from ...utils.file import save_json, load_json
 
 class Page:
     def __init__(self, gid):

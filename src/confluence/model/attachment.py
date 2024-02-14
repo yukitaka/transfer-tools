@@ -12,17 +12,21 @@ class Attachment:
     def base_path(self):
         return f'data/confluence/pages/{self.page_id}/attachments/{self.id}'
 
+    def file_path(self):
+        name = self.json()['title']
+        return self.base_path().replace(self.id, name)
+
     def json(self):
         if not self.json_blob:
             self.json_blob = load_json(self.base_path() + '.json')
         return self.json_blob
 
-    def file_name(self):
-        return self.json()['title']
+    def size(self):
+        return os.path.getsize(self.file_path())
 
     def file(self):
-        name = self.file_name()
-        file_path = self.base_path().replace(self.id, name)
+        name = self.json()['title']
+        file_path = self.file_path()
         if os.path.exists(file_path):
             return name, open(file_path, 'rb'), self.json()['mediaType']
 

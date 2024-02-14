@@ -18,6 +18,20 @@ class Page:
     def json(self):
         return load_json(self.file_path() + '/page.json')
 
+    def parent(self):
+        pid = self.json()['parentId']
+        if pid is None:
+            return None
+
+        return Page(int(self.json()['parentId']))
+
+    def size(self):
+        s = os.path.getsize(self.file_path() + '/page.json')
+        for a in self.attachments():
+            s += a.size()
+
+        return s
+
     def md(self):
         if self.markdown is not None:
             return self.markdown
@@ -50,4 +64,4 @@ class Page:
     def from_file(file):
         m = re.match(r'[^\d]+(\d+)/page.json$', file)
         if m:
-            return Page(m.group(1))
+            return Page(int(m.group(1)))

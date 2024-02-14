@@ -3,6 +3,7 @@ from dotenv import load_dotenv
 from src.confluence import convert as cc
 from src.growi import download as gd
 from src.interactor.upload import Growi
+from src.interactor.stat import ConfluenceStat
 from src.interactor.download import Confluence
 from src.interactor.diff import Diff
 
@@ -43,6 +44,10 @@ def main():
     confluence_convert_pages.add_argument('-A', '--all', action='store_true', help='all pages')
     confluence_convert_pages.add_argument('--recently', action='store', help='recently pages count', default=50)
     confluence_convert_pages.set_defaults(handler=cc.pages)
+
+    # stat
+    confluence_stat = confluence_subparsers.add_parser('stat', help='see `stat -h`')
+    confluence_stat.set_defaults(handler=ConfluenceStat.size)
 
     # growi
     growi = subparsers.add_parser('growi', help='see `growi -h`')
