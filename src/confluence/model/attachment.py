@@ -28,7 +28,7 @@ class Attachment:
         name = self.json()['title']
         file_path = self.file_path()
         if os.path.exists(file_path):
-            return name, open(file_path, 'rb')
+            return name, open(file_path, 'rb'), self.json()['mediaType']
 
     def download(self):
         link = self.json()['downloadLink']
