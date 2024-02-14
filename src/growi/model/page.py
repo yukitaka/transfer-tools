@@ -1,5 +1,5 @@
 import os.path
-from ...utils.file import save_json
+from ...utils.file import save_json,load_json
 
 
 class Page:
